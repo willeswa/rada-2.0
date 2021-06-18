@@ -1,22 +1,16 @@
-package com.wilies.rada.Models;
+package com.wilies.rada.models;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * The object returned by the server
  */
 public class WeatherDataResponse {
-    private int id;
+
     private String timezone;
+
+    @SerializedName("current")
     private Weather weather;
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
 
 
     public String getTimezone() {

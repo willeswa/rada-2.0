@@ -1,9 +1,13 @@
-package com.wilies.rada.Models;
+package com.wilies.rada.models;
 
 public class WeatherDescription {
+
     private int id;
+
     private String main;
+
     private String description;
+
     private String icon;
 
     public int getId() {
