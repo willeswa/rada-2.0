@@ -1,15 +1,23 @@
-package com.wilies.rada.Models;
+package com.wilies.rada.models;
 
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * The model specifically for the daily temperature.
  * Defines max and min temperature.
+ * Decorated with @SerializedName for Gson serialization
  */
 public class DailyTemperature {
+
+    @Expose
     private int id;
 
+    @SerializedName("min")
     private float minTemp;
 
+    @SerializedName("max")
     private float maxTemp;
 
     public int getId() {

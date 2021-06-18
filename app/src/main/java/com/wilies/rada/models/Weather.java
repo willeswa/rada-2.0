@@ -1,12 +1,23 @@
-package com.wilies.rada.Models;
+package com.wilies.rada.models;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Standard weather object.
  */
 public class Weather {
+
+    @Expose
     private int id;
+
+    @SerializedName("dt")
     private int unixTime;
+
+    @SerializedName("temp")
     private float temperature;
+
+    @SerializedName("weather")
     private WeatherDescription weatherDescription;
 
     public int getId() {

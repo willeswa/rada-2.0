@@ -1,15 +1,28 @@
-package com.wilies.rada.Models;
+package com.wilies.rada.models;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * A daily weather objects with more fields compared to
  * the weather object
  */
 public class DailyWeather {
+
+    @Expose
     private int id;
+
+    @SerializedName("dt")
     private int time;
+
+    @SerializedName("temp")
     private DailyTemperature dailyTemperature;
+
     private float humidity;
+
     private float rain;
+
+    @SerializedName("weather")
     private WeatherDescription weatherDescription;
 
     public int getId() {
