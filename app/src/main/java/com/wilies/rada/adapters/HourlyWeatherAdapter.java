@@ -13,15 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.wilies.rada.R;
 import com.wilies.rada.models.Weather;
+import com.wilies.rada.utils.Utility;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdapter.HourlyViewHolder> {
     private final LayoutInflater mLayoutInflater;
     private final Context mContext;
     private List<Weather> mHourlyWeatherList = new ArrayList<>();
+
 
 
     public HourlyWeatherAdapter(Context context){
@@ -40,16 +41,11 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
     public void onBindViewHolder(@NonNull HourlyViewHolder holder, int position) {
         Weather weather = mHourlyWeatherList.get(position);
         holder.getHourlyTempTextView().setText(parseToString(weather.getTemperature()));
-        holder.getHourlyTimeTextView().setText(getTimeFromTimestamp(weather.getUnixTime()));
+        holder.getHourlyTimeTextView().setText(Utility.getHoursFromTimestamp(weather.getUnixTime()));
         loadImage(holder);
     }
 
-    private String getTimeFromTimestamp(int unixTime) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(unixTime*1000L);
-        int hour = cal.get(Calendar.HOUR);
-        return String.valueOf(hour);
-    }
+
 
 
     private String parseToString(float temperature) {
@@ -75,6 +71,7 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
         mHourlyWeatherList = weatherList;
         notifyDataSetChanged();
     }
+
 
     public class HourlyViewHolder extends RecyclerView.ViewHolder {
         private TextView hourlyTimeTextView;
