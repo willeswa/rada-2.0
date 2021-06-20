@@ -1,5 +1,7 @@
 package com.wilies.rada.repositories;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.wilies.rada.WebService;
@@ -15,7 +17,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherRepository {
     private static final String BASE_URL = "https://api.openweathermap.org/";
-    private static final String API_KEY = "openweather_api_key";
+    private static final String API_KEY = "b05587e81cabab0dcff464a7d0b79b9e";
+    private static final String TAG = WeatherRepository.class.getSimpleName();
 
     private WebService mWebService;
     private MutableLiveData<WeatherDataResponse> mWeatherData;
@@ -39,12 +42,16 @@ public class WeatherRepository {
 
             @Override
             public void onResponse(Call<WeatherDataResponse> call, Response<WeatherDataResponse> response) {
-               if(response.body() != null)
-                   mWeatherData.postValue(response.body());
+               if(response.body() != null){
+                   Log.i(TAG, response.body().toString());
+                Log.i(TAG, "Repository says yeeey");
+                   mWeatherData.postValue(response.body());}
             }
 
             @Override
             public void onFailure(Call<WeatherDataResponse> call, Throwable t) {
+                Log.i(TAG, "Repository says nothing -> ", t);
+
                 mWeatherData.postValue(null);
             }
         });
