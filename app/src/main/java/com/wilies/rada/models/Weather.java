@@ -3,6 +3,8 @@ package com.wilies.rada.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Standard weather object.
  */
@@ -18,7 +20,7 @@ public class Weather {
     private float temperature;
 
     @SerializedName("weather")
-    private WeatherDescription weatherDescription;
+    private List<WeatherDescription> weatherDescription;
 
     public int getId() {
         return id;
@@ -44,11 +46,11 @@ public class Weather {
         this.temperature = temperature;
     }
 
-    public WeatherDescription getWeatherDescription() {
+    public List<WeatherDescription> getWeatherDescription() {
         return weatherDescription;
     }
 
-    public void setWeatherDescription(WeatherDescription weatherDescription) {
+    public void setWeatherDescription(List<WeatherDescription> weatherDescription) {
         this.weatherDescription = weatherDescription;
     }
 }

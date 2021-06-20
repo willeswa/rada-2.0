@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:background="@drawable/oval_shape"
+    android:elevation="4dp"
     android:paddingHorizontal="8dp"
     android:paddingVertical="16dp">
 
@@ -31,7 +32,7 @@
             android:textStyle="normal" />
 
         <ImageView
-            android:id="@+id/cloud_image"
+            android:id="@+id/hourly_cloud_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -39,7 +40,7 @@
             app:srcCompat="@drawable/ic_baseline_cloud_25" />
 
         <TextView
-            android:id="@+id/daily_temp"
+            android:id="@+id/hourly_daily_temp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="0.6"

@@ -3,6 +3,8 @@ package com.wilies.rada.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * A daily weather objects with more fields compared to
  * the weather object
@@ -23,7 +25,7 @@ public class DailyWeather {
     private float rain;
 
     @SerializedName("weather")
-    private WeatherDescription weatherDescription;
+    private List<WeatherDescription> weatherDescription;
 
     public int getId() {
         return id;
@@ -65,11 +67,11 @@ public class DailyWeather {
         this.rain = rain;
     }
 
-    public WeatherDescription getWeatherDescription() {
+    public List<WeatherDescription> getWeatherDescription() {
         return weatherDescription;
     }
 
-    public void setWeatherDescription(WeatherDescription weatherDescription) {
+    public void setWeatherDescription(List<WeatherDescription> weatherDescription) {
         this.weatherDescription = weatherDescription;
     }
 }
