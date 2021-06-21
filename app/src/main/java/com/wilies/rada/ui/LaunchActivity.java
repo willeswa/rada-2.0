@@ -18,13 +18,13 @@ import com.wilies.rada.adapters.HourlyWeatherAdapter;
 import com.wilies.rada.models.Weather;
 import com.wilies.rada.models.WeatherDataResponse;
 import com.wilies.rada.utils.Utility;
-import com.wilies.rada.viewmodels.HourlyWeatherViewModel;
+import com.wilies.rada.viewmodels.WeatherViewModel;
 
     public class LaunchActivity extends AppCompatActivity {
         private static final String TAG = LaunchActivity.class.getSimpleName();
         private Button forecastButton;
         private HourlyWeatherAdapter mHourlyWeatherAdapter;
-        private HourlyWeatherViewModel mHourlyWeatherViewModel;
+        private WeatherViewModel mHourlyWeatherViewModel;
         private RecyclerView mRecyclerView;
         private TextView currentWeatherTV;
         private TextView currentLocationTV;
@@ -44,7 +44,7 @@ import com.wilies.rada.viewmodels.HourlyWeatherViewModel;
         populateViews();
 
         mHourlyWeatherAdapter = new HourlyWeatherAdapter(this);
-        mHourlyWeatherViewModel = new HourlyWeatherViewModel(getApplication());
+        mHourlyWeatherViewModel = new WeatherViewModel(getApplication());
         mHourlyWeatherViewModel.init();
         mHourlyWeatherViewModel.loadWeatherData("Nairobi");
         mRecyclerView.setAdapter(mHourlyWeatherAdapter);

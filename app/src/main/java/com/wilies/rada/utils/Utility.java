@@ -3,6 +3,13 @@ package com.wilies.rada.utils;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.view.View;
+import android.widget.ImageView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.wilies.rada.adapters.HourlyWeatherAdapter;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -47,5 +54,28 @@ public class Utility {
         String stringDate = formatter.format(cal.getTime());
 
         return stringDate;
+    }
+
+    public static String getDayOfTheWeek(int unixTime){
+        formatter = new SimpleDateFormat("EEEE");
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(unixTime*1000L);
+        return  formatter.format(cal.getTime());
+    }
+
+
+    public static String parseFloatToString(float floatValue) {
+        return String.valueOf(floatValue);
+    }
+
+
+    public static void loadLocalToImageView(View view, String fileName, String defType, Context context, ImageView imageView) {
+        Glide.with(view)
+                .load(context.getResources()
+                        .getIdentifier(
+                                fileName,
+                                defType,
+                                context.getPackageName()))
+                .into(imageView);
     }
 }
