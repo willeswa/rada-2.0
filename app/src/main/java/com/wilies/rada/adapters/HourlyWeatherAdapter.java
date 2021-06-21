@@ -42,7 +42,8 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
         Weather weather = mHourlyWeatherList.get(position);
         holder.getHourlyTempTextView().setText(parseToString(weather.getTemperature()));
         holder.getHourlyTimeTextView().setText(Utility.getHoursFromTimestamp(weather.getUnixTime()));
-        Utility.loadLocalToImageView(holder.itemView, "ic_baseline_cloud_25", "drawable", mContext, holder.getHourlyIcon());
+//        Utility.loadLocalToImageView(holder.itemView, "ic_baseline_cloud_25", "drawable", mContext, holder.getHourlyIcon());
+        Utility.loadFromURLToImageView(mContext, weather.getWeatherDescription().get(0).getIcon(), holder.getHourlyIcon());
     }
 
 

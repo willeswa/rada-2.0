@@ -78,6 +78,7 @@ import com.wilies.rada.viewmodels.WeatherViewModel;
         currentTempTV.setText(String.valueOf(currentWeather.getTemperature()));
         currentLocationTV.setText(Utility.getLocationName(-1.3074432,36.78208, this));
         currentDateTV.setText(Utility.getDateFromTimestamp(currentWeather.getUnixTime()));
+
         }
 
         private void populateViews() {

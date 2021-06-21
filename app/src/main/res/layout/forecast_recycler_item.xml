@@ -25,8 +25,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:cropToPadding="false"
-            android:padding="16dp"
-            android:scaleType="fitCenter"
+            android:scaleType="center"
             app:srcCompat="@drawable/ic_baseline_cloud_queue_24" />
 
         <LinearLayout
