@@ -42,7 +42,7 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
         Weather weather = mHourlyWeatherList.get(position);
         holder.getHourlyTempTextView().setText(parseToString(weather.getTemperature()));
         holder.getHourlyTimeTextView().setText(Utility.getHoursFromTimestamp(weather.getUnixTime()));
-        loadImage(holder);
+        Utility.loadLocalToImageView(holder.itemView, "ic_baseline_cloud_25", "drawable", mContext, holder.getHourlyIcon());
     }
 
 
@@ -52,15 +52,6 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
         return String.valueOf(temperature);
     }
 
-    private void loadImage(HourlyViewHolder holder) {
-        Glide.with(holder.itemView)
-                .load(mContext.getResources()
-                        .getIdentifier(
-                                "ic_baseline_cloud_25",
-                                "drawable",
-                                mContext.getPackageName()))
-        .into(holder.getHourlyIcon());
-    }
 
     @Override
     public int getItemCount() {
