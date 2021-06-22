@@ -71,7 +71,15 @@ public class Utility {
     }
 
 
-    public static void loadLocalToImageView(View view, String fileName, String defType, Context context, ImageView imageView) {
+    /**
+     * Loads an image into an ImageView using the Glide library
+     * @param view
+     * @param fileName
+     * @param defType
+     * @param context
+     * @param imageView
+     */
+    public static void loadDrawableToImageView(View view, String fileName, String defType, Context context, ImageView imageView) {
         Glide.with(view)
                 .load(context.getResources()
                         .getIdentifier(
@@ -97,5 +105,9 @@ public class Utility {
             e.printStackTrace();
         }
         return url;
+    }
+
+    public static String capitalize(String word){
+        return word.substring(0, 1).toUpperCase() + word.substring(1);
     }
 }
