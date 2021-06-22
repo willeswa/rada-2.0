@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.wilies.rada.R;
 import com.wilies.rada.models.DailyWeather;
-import com.wilies.rada.ui.ForecastActivity;
 import com.wilies.rada.utils.Utility;
 
 import java.util.ArrayList;

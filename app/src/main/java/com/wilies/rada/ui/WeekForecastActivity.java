@@ -12,7 +12,7 @@ import com.wilies.rada.adapters.DailyWeatherAdapter;
 import com.wilies.rada.models.WeatherDataResponse;
 import com.wilies.rada.viewmodels.WeatherViewModel;
 
-public class ForecastActivity extends AppCompatActivity {
+public class WeekForecastActivity extends AppCompatActivity {
     private WeatherViewModel mWeatherViewModel;
     private RecyclerView mRecyclerView;
     private DailyWeatherAdapter mWeatherAdapter;
