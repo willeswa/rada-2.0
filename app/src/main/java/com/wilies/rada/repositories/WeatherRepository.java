@@ -17,11 +17,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherRepository {
     private static final String BASE_URL = "https://api.openweathermap.org/";
-    private static final String API_KEY = "979f66aa1cfbce18d7d25d56ea60e213";
+    private static final String API_KEY = "ae6a437af01f56f1ea0a85dc4a4db689";
     private static final String TAG = WeatherRepository.class.getSimpleName();
 
     private WebService mWebService;
     private MutableLiveData<WeatherDataResponse> mWeatherData;
+    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();;
 
     public WeatherRepository(){
         mWeatherData = new MutableLiveData<>();
@@ -68,5 +69,13 @@ public class WeatherRepository {
 
     public MutableLiveData<WeatherDataResponse> getWeatherData() {
         return mWeatherData;
+    }
+
+    public MutableLiveData<Boolean> getIsLoading() {
+        return isLoading;
+    }
+
+    public void setIsLoading(boolean isLoading) {
+        this.isLoading.postValue(isLoading);
     }
 }
