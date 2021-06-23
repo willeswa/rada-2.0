@@ -38,8 +38,8 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
     public void onBindViewHolder(@NonNull DailyViewHolder holder, int position) {
         DailyWeather dailyWeather = mDailyForecasts.get(position);
         holder.getDailyHumidity().setText(Utility.parseFloatToString(dailyWeather.getHumidity()));
-        holder.getDailyMaxTemp().setText(Utility.parseFloatToString(dailyWeather.getDailyTemperature().getMaxTemp()));
-        holder.getDailyMinTemp().setText(Utility.parseFloatToString(dailyWeather.getDailyTemperature().getMinTemp()));
+        holder.getDailyMaxTemp().setText(Utility.kelvinToCelcius(dailyWeather.getDailyTemperature().getMaxTemp()));
+        holder.getDailyMinTemp().setText(Utility.kelvinToCelcius(dailyWeather.getDailyTemperature().getMinTemp()));
         holder.getDailyRain().setText(Utility.parseFloatToString(dailyWeather.getRain()));
         holder.getDayOfWeek().setText(Utility.getDayOfTheWeek(dailyWeather.getTime()));
 //        Utility.loadLocalToImageView(holder.itemView, "ic_baseline_cloud_25", "drawable", mContext, holder.getDailyImageView());

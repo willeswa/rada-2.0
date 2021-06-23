@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherRepository {
     private static final String BASE_URL = "https://api.openweathermap.org/";
-    private static final String API_KEY = "";
+    private static final String API_KEY = "979f66aa1cfbce18d7d25d56ea60e213";
     private static final String TAG = WeatherRepository.class.getSimpleName();
 
     private WebService mWebService;
