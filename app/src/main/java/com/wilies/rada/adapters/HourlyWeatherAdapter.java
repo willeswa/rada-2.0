@@ -40,7 +40,7 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
     @Override
     public void onBindViewHolder(@NonNull HourlyViewHolder holder, int position) {
         Weather weather = mHourlyWeatherList.get(position);
-        holder.getHourlyTempTextView().setText(parseToString(weather.getTemperature()));
+        holder.getHourlyTempTextView().setText(Utility.kelvinToCelcius(weather.getTemperature()));
         holder.getHourlyTimeTextView().setText(Utility.getHoursFromTimestamp(weather.getUnixTime()));
 //        Utility.loadLocalToImageView(holder.itemView, "ic_baseline_cloud_25", "drawable", mContext, holder.getHourlyIcon());
         Utility.loadFromURLToImageView(mContext, weather.getWeatherDescription().get(0).getIcon(), holder.getHourlyIcon());
@@ -48,10 +48,6 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
 
 
 
-
-    private String parseToString(float temperature) {
-        return String.valueOf(temperature);
-    }
 
 
     @Override

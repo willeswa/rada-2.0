@@ -91,7 +91,7 @@ public class Utility {
 
 
     public static void loadFromURLToImageView(Context context, String imageName, ImageView imageView){
-        URL url = getUrlFromString("http://openweathermap.org/img/wn/" + imageName + "@2x.png");
+        URL url = getUrlFromString("http://openweathermap.org/img/wn/" + imageName + ".png");
         Glide.with(context).load(url).
                 into(imageView);
     }
@@ -109,5 +109,15 @@ public class Utility {
 
     public static String capitalize(String word){
         return word.substring(0, 1).toUpperCase() + word.substring(1);
+    }
+
+    /**
+     * Convert Kelvin to degrees celcius
+     * @param floatTemp
+     * @return
+     */
+    public static String kelvinToCelcius(float floatTemp){
+         int cel = (int) (floatTemp - 273.15);
+         return  String.valueOf(cel);
     }
 }
