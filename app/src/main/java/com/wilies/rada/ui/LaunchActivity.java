@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.wilies.rada.R;
@@ -33,10 +35,11 @@ import com.wilies.rada.viewmodels.WeatherViewModel;
         private TextView currentTempTV;
         private ImageView currentIconIV;
         private LinearLayout mLinearLayout;
+        private ProgressBar mainProgressBar;
+        private LinearLayout mainRootLayout;
 
 
-
-    @Override
+        @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -53,21 +56,35 @@ import com.wilies.rada.viewmodels.WeatherViewModel;
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
+        mHourlyWeatherViewModel.setIsLoading(true);
 
 
-        mHourlyWeatherViewModel.getWeatherDataResponseLiveData().observe(this, new Observer<WeatherDataResponse>() {
 
-            @Override
-            public void onChanged(WeatherDataResponse weatherDataResponse) {
+                mHourlyWeatherViewModel.getWeatherDataResponseLiveData().observe(this, new Observer<WeatherDataResponse>() {
 
-                if(weatherDataResponse != null){
-                    loadCurrentWeather(weatherDataResponse.getCurrentWeather());
-                    mHourlyWeatherAdapter.setHourlyWeatherList(weatherDataResponse.getHourlyWeathers());
-                } else {
-                    Log.i(TAG, "nah man, didn't happen");
-                }
-            }
-        });
+                    @Override
+                    public void onChanged(WeatherDataResponse weatherDataResponse) {
+
+                        if(weatherDataResponse != null){
+                            loadCurrentWeather(weatherDataResponse.getCurrentWeather());
+                            mHourlyWeatherAdapter.setHourlyWeatherList(weatherDataResponse.getHourlyWeathers());
+                            mHourlyWeatherViewModel.setIsLoading(false);
+                        } else {
+                            Log.i(TAG, "nah man, didn't happen");
+                        }
+                    }
+                });
+
+                mHourlyWeatherViewModel.getIsLoading().observe(this, new Observer<Boolean>(){
+
+                    @Override
+                    public void onChanged(Boolean isLoading) {
+                        if(!isLoading){
+                            mainProgressBar.setVisibility(View.GONE);
+                            mainRootLayout.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
 
         forecastButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, WeekForecastActivity.class);
@@ -131,6 +148,8 @@ import com.wilies.rada.viewmodels.WeatherViewModel;
         currentTempTV = findViewById(R.id.current_temp_tv);
         mLinearLayout = findViewById(R.id.home_root_linearlayout);
         currentIconIV = findViewById(R.id.current_weather_icon_iv);
+        mainProgressBar = findViewById(R.id.main_loading_bar);
+        mainRootLayout = findViewById(R.id.main_screen_root_layout);
 
 
         }
