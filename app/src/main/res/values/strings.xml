@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Rada</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_settings">Customize</string>
+
+    <!-- Preference Titles -->
+    <string name="profile_header">Profile</string>
+    <string name="preference_header">Preferences</string>
+
+    <!-- Profile Preferences -->
+    <string name="profile_name">Your Name</string>
+    <string name="location">Current Location</string>
+
+    <!--  Preferences -->
+    <string name="preference_title">Units</string>
+
 </resources>

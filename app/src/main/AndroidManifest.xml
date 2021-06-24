@@ -13,9 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Rada20"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.WeekForecastActivity"
-            android:label="Weather Forecast"
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/title_activity_settings"
             android:parentActivityName=".ui.LaunchActivity"></activity>
+        <activity
+            android:name=".ui.WeekForecastActivity"
+            android:label="Weather Forecast"
+            android:parentActivityName=".ui.LaunchActivity" />
         <activity android:name=".ui.LaunchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
