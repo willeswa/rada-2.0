@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherRepository {
     private static final String BASE_URL = "https://api.openweathermap.org/";
-    private static final String API_KEY = "ae6a437af01f56f1ea0a85dc4a4db689";
+    private static final String API_KEY = "";
     private static final String TAG = WeatherRepository.class.getSimpleName();
 
     private WebService mWebService;
@@ -44,8 +44,6 @@ public class WeatherRepository {
             @Override
             public void onResponse(Call<WeatherDataResponse> call, Response<WeatherDataResponse> response) {
                if(response.body() != null){
-                   Log.i(TAG, response.body().toString());
-                Log.i(TAG, "Repository says yeeey");
                    mWeatherData.postValue(response.body());}
             }
 

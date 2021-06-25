@@ -1,0 +1,47 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/Theme.Rada20">
+
+    <PreferenceCategory
+        android:theme="@style/Theme.Rada20"
+        app:title="@string/profile_header"
+        android:layout="@layout/pref_heading_style"
+        >
+
+        <EditTextPreference
+            android:theme="@style/Theme.Rada20"
+            app:icon="@drawable/ic_baseline_person_24"
+            app:key="signature"
+            app:title="@string/profile_name"
+            app:useSimpleSummaryProvider="true" />
+        <Preference
+            android:title="@string/location"
+            android:key="location"
+            android:summary="Your location"
+            android:icon="@drawable/ic_baseline_location_on_24"></Preference>
+
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:clipToPadding="false"
+        android:layout="@layout/pref_heading_style"
+        android:theme="@style/Theme.Rada20"
+        app:title="@string/preference_header">
+
+
+        <ListPreference
+            app:defaultValue="reply"
+            app:entries="@array/reply_entries"
+            app:entryValues="@array/reply_values"
+            app:icon="@drawable/ic_baseline_ac_unit_24"
+            app:key="reply"
+            app:title="@string/preference_title"
+            app:useSimpleSummaryProvider="true" />
+
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
