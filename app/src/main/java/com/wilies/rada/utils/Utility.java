@@ -1,6 +1,8 @@
 package com.wilies.rada.utils;
 
+import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.ImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.wilies.rada.R;
 import com.wilies.rada.adapters.HourlyWeatherAdapter;
 
 import java.io.IOException;
@@ -21,6 +24,20 @@ import java.util.Locale;
 
 public class Utility {
     private static SimpleDateFormat formatter;
+
+
+    public static Address getLocation(Context context, String locationName) {
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        List<Address> addressList = null;
+
+        try {
+            addressList = geocoder.getFromLocationName(locationName, 5);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return addressList.get(0);
+    }
 
 
     public static String getLocationName(double lat, double lon, Context context){
@@ -120,4 +137,22 @@ public class Utility {
          int cel = (int) (floatTemp - 273.15);
          return  String.valueOf(cel);
     }
+
+    public static String getPreferredLocation(Application application, SharedPreferences sharedPreferences) {
+        Context context = application.getApplicationContext();
+        String location = sharedPreferences.getString(context.getResources().getString(R.string.location_key), context.getString(R.string.default_location));
+        return location;
+    }
+
+    public static int getPreferredUnits(Application application, SharedPreferences sharedPreferences){
+        Context context = application.getApplicationContext();
+        String units = sharedPreferences.getString(context.getResources().getString(R.string.units_key), context.getString(R.string.default_units));
+
+        if(units == "Celcius"){
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
 }
