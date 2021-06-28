@@ -14,11 +14,11 @@
             app:key="signature"
             app:title="@string/profile_name"
             app:useSimpleSummaryProvider="true" />
-        <Preference
+            <EditTextPreference
             android:title="@string/location"
-            android:key="location"
+            android:key="@string/location_key"
             android:summary="Your location"
-            android:icon="@drawable/ic_baseline_location_on_24"></Preference>
+            android:icon="@drawable/ic_baseline_location_on_24"></EditTextPreference>
 
 
 
@@ -32,11 +32,11 @@
 
 
         <ListPreference
-            app:defaultValue="reply"
+            app:defaultValue="@string/default_units"
             app:entries="@array/reply_entries"
             app:entryValues="@array/reply_values"
             app:icon="@drawable/ic_baseline_ac_unit_24"
-            app:key="reply"
+            app:key="@string/units_key"
             app:title="@string/preference_title"
             app:useSimpleSummaryProvider="true" />
 

@@ -2,9 +2,11 @@ package com.wilies.rada.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -13,6 +15,7 @@ import android.widget.ProgressBar;
 import com.wilies.rada.R;
 import com.wilies.rada.adapters.DailyWeatherAdapter;
 import com.wilies.rada.models.WeatherDataResponse;
+import com.wilies.rada.utils.Utility;
 import com.wilies.rada.viewmodels.WeatherViewModel;
 
 public class WeekForecastActivity extends AppCompatActivity {
@@ -21,6 +24,7 @@ public class WeekForecastActivity extends AppCompatActivity {
     private DailyWeatherAdapter mWeatherAdapter;
     private ProgressBar progressBar;
     private LinearLayout rootLayout;
+    private SharedPreferences sharedPreferences;
 
 
     @Override
@@ -32,9 +36,11 @@ public class WeekForecastActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.weekly_progress_bar);
         rootLayout = findViewById(R.id.weekly_root_layout);
 
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         mWeatherViewModel = new WeatherViewModel(getApplication());
         mWeatherViewModel.init();
-        mWeatherViewModel.loadWeatherData("Nairobi");
+        mWeatherViewModel.loadWeatherData(Utility.getLocation(this, Utility.getPreferredLocation(getApplication(), sharedPreferences)));
         mWeatherAdapter = new DailyWeatherAdapter(this);
         mRecyclerView.setAdapter(mWeatherAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

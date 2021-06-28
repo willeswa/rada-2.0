@@ -1,6 +1,7 @@
 package com.wilies.rada.viewmodels;
 
 import android.app.Application;
+import android.location.Address;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -27,7 +28,7 @@ public class WeatherViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public void loadWeatherData(String location){
+    public void loadWeatherData(Address location){
         mWeatherRepository.loadWeatherData(location);
     }
 

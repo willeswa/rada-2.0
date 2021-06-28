@@ -11,7 +11,14 @@
     <string name="profile_name">Your Name</string>
     <string name="location">Current Location</string>
 
+    <!-- keys -->
+    <string name="location_key">location_key</string>
+    <string name="profile_name_key">profile_key</string>
+    <string name="units_key">units_key</string>
+
     <!--  Preferences -->
     <string name="preference_title">Units</string>
+    <string name="default_location">Nairobi, Kenya</string>
+    <string name="default_units">Celsius</string>
 
 </resources>

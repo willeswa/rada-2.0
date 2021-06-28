@@ -1,5 +1,6 @@
 package com.wilies.rada.repositories;
 
+import android.location.Address;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -17,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherRepository {
     private static final String BASE_URL = "https://api.openweathermap.org/";
-    private static final String API_KEY = "";
+    private static final String API_KEY = "752625c1be463f14849c9ed0a907ad2e";
     private static final String TAG = WeatherRepository.class.getSimpleName();
 
     private WebService mWebService;
@@ -37,8 +38,8 @@ public class WeatherRepository {
                 .create(WebService.class);
     }
 
-    public void loadWeatherData(String location){
-        mWebService.getWeatherData(-1.3074432,36.78208, API_KEY)
+    public void loadWeatherData(Address location){
+        mWebService.getWeatherData(location.getLatitude(),location.getLongitude(), API_KEY)
         .enqueue(new Callback<WeatherDataResponse>(){
 
             @Override
