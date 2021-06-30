@@ -19,6 +19,6 @@
     <!--  Preferences -->
     <string name="preference_title">Units</string>
     <string name="default_location">Nairobi, Kenya</string>
-    <string name="default_units">Celsius</string>
+    <string name="default_units">Metric</string>
 
 </resources>

@@ -7,6 +7,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -138,21 +140,32 @@ public class Utility {
          return  String.valueOf(cel);
     }
 
-    public static String getPreferredLocation(Application application, SharedPreferences sharedPreferences) {
-        Context context = application.getApplicationContext();
-        String location = sharedPreferences.getString(context.getResources().getString(R.string.location_key), context.getString(R.string.default_location));
+    public static String getPreferredLocation(Application app, SharedPreferences prefs) {
+        String location = getPreferenceValue(app, prefs, R.string.location_key, R.string.default_location);
         return location;
     }
 
-    public static int getPreferredUnits(Application application, SharedPreferences sharedPreferences){
-        Context context = application.getApplicationContext();
-        String units = sharedPreferences.getString(context.getResources().getString(R.string.units_key), context.getString(R.string.default_units));
+    public static String getPreferredUnits(Application app, SharedPreferences prefs){
+        String units = getPreferenceValue(app, prefs, R.string.units_key, R.string.default_units);
+        return units;
+    }
 
-        if(units == "Celcius"){
-            return 0;
+    public static String getPreferenceValue(Application app, SharedPreferences prefs, int key, int default_key){
+        Context context = app.getApplicationContext();
+        String preferenceValue = prefs.getString(context.getResources().getString(key), context.getString(default_key));
+        return preferenceValue;
+    }
+
+    public static void setPreferredUnits(TextView hourlyTempTextView, String preferred_units, float temperature) {
+        if (preferred_units.equals("C")) {
+            hourlyTempTextView.setText(Utility.kelvinToCelcius(temperature));
         } else {
-            return 1;
+            hourlyTempTextView.setText(String.valueOf((int)temperature));
         }
     }
 
+    public static void finishLoading(ProgressBar progressBar, View viewToShow) {
+        progressBar.setVisibility(View.GONE);
+        viewToShow.setVisibility(View.VISIBLE);
+    }
 }

@@ -32,9 +32,9 @@
 
 
         <ListPreference
-            app:defaultValue="@string/default_units"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
+            android:defaultValue="@string/default_units"
+            app:entries="@array/units_entries"
+            app:entryValues="@array/units_values"
             app:icon="@drawable/ic_baseline_ac_unit_24"
             app:key="@string/units_key"
             app:title="@string/preference_title"

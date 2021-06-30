@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.wilies.rada.R;
 import com.wilies.rada.models.Weather;
 import com.wilies.rada.utils.Utility;
@@ -22,10 +21,10 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
     private final LayoutInflater mLayoutInflater;
     private final Context mContext;
     private List<Weather> mHourlyWeatherList = new ArrayList<>();
+    private String PREFERRED_UNITS;
 
 
-
-    public HourlyWeatherAdapter(Context context){
+    public HourlyWeatherAdapter(Context context) {
         mLayoutInflater = LayoutInflater.from(context);
         mContext = context;
     }
@@ -40,14 +39,11 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
     @Override
     public void onBindViewHolder(@NonNull HourlyViewHolder holder, int position) {
         Weather weather = mHourlyWeatherList.get(position);
-        holder.getHourlyTempTextView().setText(Utility.kelvinToCelcius(weather.getTemperature()));
+        holder.getUnitsTV().setText(PREFERRED_UNITS);
+        Utility.setPreferredUnits(holder.getHourlyTempTextView(), PREFERRED_UNITS, weather.getTemperature());
         holder.getHourlyTimeTextView().setText(Utility.getHoursFromTimestamp(weather.getUnixTime()));
-//        Utility.loadLocalToImageView(holder.itemView, "ic_baseline_cloud_25", "drawable", mContext, holder.getHourlyIcon());
         Utility.loadFromURLToImageView(mContext, weather.getWeatherDescription().get(0).getIcon(), holder.getHourlyIcon());
     }
-
-
-
 
 
     @Override
@@ -55,22 +51,29 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
         return mHourlyWeatherList.size();
     }
 
-    public void setHourlyWeatherList(List<Weather> weatherList){
+    public void setHourlyWeatherList(List<Weather> weatherList) {
         mHourlyWeatherList = weatherList;
+        notifyDataSetChanged();
+    }
+
+    public void setPREFERRED_UNITS(String PREFERRED_UNITS) {
+        this.PREFERRED_UNITS = PREFERRED_UNITS;
         notifyDataSetChanged();
     }
 
 
     public class HourlyViewHolder extends RecyclerView.ViewHolder {
-        private TextView hourlyTimeTextView;
-        private ImageView hourlyIcon;
-        private TextView hourlyTempTextView;
+        private final TextView hourlyTimeTextView;
+        private final ImageView hourlyIcon;
+        private final TextView hourlyTempTextView;
+        private final TextView unitsTV;
 
         public HourlyViewHolder(@NonNull View itemView) {
             super(itemView);
             hourlyIcon = itemView.findViewById(R.id.hourly_cloud_image);
             hourlyTimeTextView = itemView.findViewById(R.id.hour);
             hourlyTempTextView = itemView.findViewById(R.id.hourly_daily_temp);
+            unitsTV = itemView.findViewById(R.id.units);
         }
 
         public TextView getHourlyTimeTextView() {
@@ -78,11 +81,9 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
         }
 
 
-
         public ImageView getHourlyIcon() {
             return hourlyIcon;
         }
-
 
 
         public TextView getHourlyTempTextView() {
@@ -90,5 +91,8 @@ public class HourlyWeatherAdapter extends RecyclerView.Adapter<HourlyWeatherAdap
         }
 
 
+        public TextView getUnitsTV() {
+            return unitsTV;
+        }
     }
 }
