@@ -21,7 +21,8 @@
             android:name=".ui.WeekForecastActivity"
             android:label="Weather Forecast"
             android:parentActivityName=".ui.LaunchActivity" />
-        <activity android:name=".ui.LaunchActivity">
+        <activity android:name=".ui.LaunchActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

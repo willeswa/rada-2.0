@@ -74,4 +74,6 @@ public class DailyWeather {
     public void setWeatherDescription(List<WeatherDescription> weatherDescription) {
         this.weatherDescription = weatherDescription;
     }
+
+
 }

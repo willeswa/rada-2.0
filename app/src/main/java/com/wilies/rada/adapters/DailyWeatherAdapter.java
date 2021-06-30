@@ -21,6 +21,7 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
     private final LayoutInflater mLayoutInflater;
     private List<DailyWeather> mDailyForecasts = new ArrayList<>();
     private Context mContext;
+    private String PREFERRED_UNITS;
 
     public DailyWeatherAdapter(Context context) {
         mLayoutInflater = LayoutInflater.from(context);
@@ -38,8 +39,8 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
     public void onBindViewHolder(@NonNull DailyViewHolder holder, int position) {
         DailyWeather dailyWeather = mDailyForecasts.get(position);
         holder.getDailyHumidity().setText(Utility.parseFloatToString(dailyWeather.getHumidity()));
-        holder.getDailyMaxTemp().setText(Utility.kelvinToCelcius(dailyWeather.getDailyTemperature().getMaxTemp()));
-        holder.getDailyMinTemp().setText(Utility.kelvinToCelcius(dailyWeather.getDailyTemperature().getMinTemp()));
+        Utility.setPreferredUnits(holder.getDailyMaxTemp(), PREFERRED_UNITS, dailyWeather.getDailyTemperature().getMaxTemp());
+        Utility.setPreferredUnits(holder.getDailyMinTemp(), PREFERRED_UNITS, dailyWeather.getDailyTemperature().getMinTemp());
         holder.getDailyRain().setText(Utility.parseFloatToString(dailyWeather.getRain()));
         holder.getDayOfWeek().setText(Utility.getDayOfTheWeek(dailyWeather.getTime()));
 //        Utility.loadLocalToImageView(holder.itemView, "ic_baseline_cloud_25", "drawable", mContext, holder.getDailyImageView());
@@ -55,6 +56,10 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
     public void setDailyForecasts(List<DailyWeather> dailyWeathers) {
         this.mDailyForecasts = dailyWeathers;
         notifyDataSetChanged();
+    }
+
+    public void setPREFERRED_UNITS(String PREFERRED_UNITS) {
+        this.PREFERRED_UNITS = PREFERRED_UNITS;
     }
 
     public class DailyViewHolder extends RecyclerView.ViewHolder {

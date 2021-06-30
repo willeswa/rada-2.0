@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,8 +29,10 @@ import com.wilies.rada.utils.Utility;
 import com.wilies.rada.viewmodels.WeatherViewModel;
 
 public class LaunchActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+    public static final String LOCATION_EXTRA = "com.willies.rada.ui.location_extra";
+
     private static final String TAG = LaunchActivity.class.getSimpleName();
-    private static int PREFERRED_UNITS;
+    public static final String PREFERRED_UNITS_EXTRA = "com.willies.rada.ui.preferred_units_extra";
     private Button forecastButton;
     private HourlyWeatherAdapter mHourlyWeatherAdapter;
     private WeatherViewModel mHourlyWeatherViewModel;
@@ -46,6 +47,10 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
     private LinearLayout mainRootLayout;
     private Address location;
     private SharedPreferences sharedPreferences;
+    private LinearLayoutManager mLinearLayoutManager;
+    private Weather mMCurrentWeather;
+    private TextView currentUnitsTV;
+
 
 
     @Override
@@ -60,63 +65,59 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
         setContentView(R.layout.activity_main);
 
         populateViews();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        location = Utility.getLocation(this, preferredLocation());
-        
+        loadState();
 
-        mHourlyWeatherViewModel = new WeatherViewModel(getApplication());
+
         mHourlyWeatherViewModel.init();
         mHourlyWeatherViewModel.loadWeatherData(location);
 
-        mHourlyWeatherAdapter = new HourlyWeatherAdapter(this);
-        mRecyclerView.setAdapter(mHourlyWeatherAdapter);
+        mHourlyWeatherAdapter.setPREFERRED_UNITS(Utility.getPreferredUnits(getApplication(), sharedPreferences));
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mHourlyWeatherViewModel.setIsLoading(true);
+        mRecyclerView.setAdapter(mHourlyWeatherAdapter);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+
 
 
         loadHourlyWeather();
-        displayHourlyWeather();
-
-
-
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
         forecastButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, WeekForecastActivity.class);
+            intent.putExtra(LOCATION_EXTRA, preferredLocation());
+            intent.putExtra(PREFERRED_UNITS_EXTRA, Utility.getPreferredUnits(getApplication(), sharedPreferences));
             startActivity(intent);
         });
     }
 
-    private void displayHourlyWeather() {
-        mHourlyWeatherViewModel.getIsLoading().observe(this, new Observer<Boolean>() {
 
-            @Override
-            public void onChanged(Boolean isLoading) {
-                if (!isLoading) {
-                    mainProgressBar.setVisibility(View.GONE);
-                    mainRootLayout.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+    private void loadState() {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mHourlyWeatherViewModel = new WeatherViewModel(getApplication());
+        mHourlyWeatherAdapter = new HourlyWeatherAdapter(this);
+        mLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        location = Utility.getLocation(this, preferredLocation());
     }
 
+
     private void loadHourlyWeather() {
+
         mHourlyWeatherViewModel.getWeatherDataResponseLiveData().observe(this, new Observer<WeatherDataResponse>() {
 
             @Override
             public void onChanged(WeatherDataResponse weatherDataResponse) {
 
+                mMCurrentWeather = weatherDataResponse.getCurrentWeather();
+
                 if (weatherDataResponse != null) {
-                    loadCurrentWeather(weatherDataResponse.getCurrentWeather());
+                    loadCurrentWeather(mMCurrentWeather);
                     mHourlyWeatherAdapter.setHourlyWeatherList(weatherDataResponse.getHourlyWeathers());
-                    mHourlyWeatherViewModel.setIsLoading(false);
+                    Utility.finishLoading(mainProgressBar, mainRootLayout);
                 } else {
                     Log.i(TAG, "nah man, didn't happen");
                 }
             }
         });
+
     }
 
 
@@ -129,7 +130,7 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_settings:
                 goToSettings();
                 return true;
@@ -146,12 +147,8 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
 
     private void loadCurrentWeather(Weather currentWeather) {
         currentWeatherTV.setText(Utility.capitalize(currentWeather.getWeatherDescription().get(0).getDescription()));
-        if(PREFERRED_UNITS == 0){
-            currentTempTV.setText(Utility.kelvinToCelcius(currentWeather.getTemperature()));
-        } else if (PREFERRED_UNITS == 1){
-            currentTempTV.setText(String.valueOf((int) currentWeather.getTemperature()));
-        }
-
+        Utility.setPreferredUnits(currentTempTV, Utility.getPreferredUnits(getApplication(), sharedPreferences), currentWeather.getTemperature());
+        currentUnitsTV.setText(Utility.getPreferredUnits(getApplication(), sharedPreferences));
         currentLocationTV.setText(preferredLocation());
         currentDateTV.setText(Utility.getDateFromTimestamp(currentWeather.getUnixTime()));
         imageToLoadForWeather(currentWeather);
@@ -214,20 +211,22 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
         currentIconIV = findViewById(R.id.current_weather_icon_iv);
         mainProgressBar = findViewById(R.id.main_loading_bar);
         mainRootLayout = findViewById(R.id.main_screen_root_layout);
+        currentUnitsTV = findViewById(R.id.units_current);
 
 
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(key.equals(getResources().getString(R.string.location_key))){
+        if (key.equals(getResources().getString(R.string.location_key))) {
             mHourlyWeatherViewModel.loadWeatherData(Utility.getLocation(this, preferredLocation()));
-        } else if (key.equals(getResources().getString(R.string.profile_name_key))){
+        } else if (key.equals(getResources().getString(R.string.profile_name_key))) {
 
-        } else if (key.equals(getResources().getString(R.string.units_key))){
-            PREFERRED_UNITS = Utility.getPreferredUnits(getApplication(), sharedPreferences);
+        } else if (key.equals(getResources().getString(R.string.units_key))) {
+            mHourlyWeatherAdapter.setPREFERRED_UNITS(Utility.getPreferredUnits(getApplication(), sharedPreferences));
+            loadCurrentWeather(mMCurrentWeather);
+
         }
-
 
 
     }
