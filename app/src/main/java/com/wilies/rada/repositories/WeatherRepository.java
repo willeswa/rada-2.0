@@ -5,10 +5,17 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.wilies.rada.WebService;
+import com.wilies.rada.models.ErrorResponse;
 import com.wilies.rada.models.WeatherDataResponse;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
+
 import okhttp3.OkHttpClient;
+import okhttp3.internal.Util;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,16 +25,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherRepository {
     private static final String BASE_URL = "https://api.openweathermap.org/";
-    private static final String API_KEY = "3af907a96bd19f4258fbb11f2353b660";
+    private static final String API_KEY = "";
     private static final String TAG = WeatherRepository.class.getSimpleName();
 
     private WebService mWebService;
     private MutableLiveData<WeatherDataResponse> mWeatherData;
+
+
+    private MutableLiveData<ErrorResponse> mErrorResponse;
     private static WeatherRepository sWeatherRepository;
 
 
     private WeatherRepository(){
         mWeatherData = new MutableLiveData<>();
+        mErrorResponse = new MutableLiveData<>();
 
         OkHttpClient client = constructClient();
 
@@ -53,8 +64,16 @@ public class WeatherRepository {
 
             @Override
             public void onResponse(Call<WeatherDataResponse> call, Response<WeatherDataResponse> response) {
-               if(response.body() != null){
-                   mWeatherData.postValue(response.body());}
+               if(response.isSuccessful() && response != null){
+                   mWeatherData.postValue(response.body());
+            } else {
+                   mWeatherData.postValue(null);
+                   Gson gson = new Gson();
+                   Type type = new TypeToken<ErrorResponse>(){}.getType();
+                   ErrorResponse error = gson.fromJson(response.errorBody().charStream(), type);
+                   mErrorResponse.postValue(error);
+               }
+
             }
 
             @Override
@@ -81,6 +100,10 @@ public class WeatherRepository {
 
     public MutableLiveData<WeatherDataResponse> getWeatherData() {
         return mWeatherData;
+    }
+
+    public MutableLiveData<ErrorResponse> getErrorResponse() {
+        return mErrorResponse;
     }
 
 }

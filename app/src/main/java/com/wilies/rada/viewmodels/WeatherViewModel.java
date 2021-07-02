@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.wilies.rada.models.ErrorResponse;
 import com.wilies.rada.models.WeatherDataResponse;
 import com.wilies.rada.repositories.WeatherRepository;
 
@@ -15,13 +16,13 @@ public class WeatherViewModel extends AndroidViewModel {
     private static final String TAG = WeatherViewModel.class.getCanonicalName();
     private WeatherRepository mWeatherRepository;
     private LiveData<WeatherDataResponse> mWeatherDataResponseLiveData;
-
-
+    private MutableLiveData<ErrorResponse> mErrorResponse;
 
 
     public void init() {
         mWeatherRepository = WeatherRepository.getInstance();
         mWeatherDataResponseLiveData = mWeatherRepository.getWeatherData();
+        mErrorResponse = mWeatherRepository.getErrorResponse();
 
     }
     public WeatherViewModel(@NonNull Application application) {
@@ -37,4 +38,7 @@ public class WeatherViewModel extends AndroidViewModel {
     }
 
 
+    public MutableLiveData<ErrorResponse> getErrorResponse() {
+        return mErrorResponse;
+    }
 }
