@@ -20,7 +20,7 @@ public class WeatherViewModel extends AndroidViewModel {
 
 
     public void init() {
-        mWeatherRepository = new WeatherRepository();
+        mWeatherRepository = WeatherRepository.getInstance();
         mWeatherDataResponseLiveData = mWeatherRepository.getWeatherData();
 
     }
