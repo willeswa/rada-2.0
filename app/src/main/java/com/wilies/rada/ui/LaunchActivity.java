@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.wilies.rada.R;
 import com.wilies.rada.adapters.HourlyWeatherAdapter;
+import com.wilies.rada.models.ErrorResponse;
 import com.wilies.rada.models.Weather;
 import com.wilies.rada.models.WeatherDataResponse;
 import com.wilies.rada.utils.Utility;
@@ -50,6 +52,9 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
     private LinearLayoutManager mLinearLayoutManager;
     private Weather mMCurrentWeather;
     private TextView currentUnitsTV;
+    private LinearLayout errorScreenLayout;
+    private TextView errorCodeTV;
+    private TextView errorMessage;
 
 
 
@@ -70,7 +75,6 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
 
         mHourlyWeatherViewModel.init();
         mHourlyWeatherViewModel.loadWeatherData(location);
-
         mHourlyWeatherAdapter.setPREFERRED_UNITS(Utility.getPreferredUnits(getApplication(), sharedPreferences));
 
         mRecyclerView.setAdapter(mHourlyWeatherAdapter);
@@ -105,16 +109,24 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
 
             @Override
             public void onChanged(WeatherDataResponse weatherDataResponse) {
-
-                mMCurrentWeather = weatherDataResponse.getCurrentWeather();
-
                 if (weatherDataResponse != null) {
+                    getSupportActionBar().show();
+                    mMCurrentWeather = weatherDataResponse.getCurrentWeather();
                     loadCurrentWeather(mMCurrentWeather);
                     mHourlyWeatherAdapter.setHourlyWeatherList(weatherDataResponse.getHourlyWeathers());
                     Utility.finishLoading(mainProgressBar, mainRootLayout);
-                } else {
-                    Log.i(TAG, "nah man, didn't happen");
                 }
+            }
+        });
+
+        mHourlyWeatherViewModel.getErrorResponse().observe(this, new Observer<ErrorResponse>(){
+
+            @Override
+            public void onChanged(ErrorResponse errorResponse) {
+                errorCodeTV.setText(String.valueOf(errorResponse.getCode()));
+                errorMessage.setText(Utility.getErrorMessage(errorResponse));
+                Utility.finishLoading(mainProgressBar, errorScreenLayout);
+                Utility.showErrorResponse(LaunchActivity.this, errorResponse);
             }
         });
 
@@ -200,7 +212,7 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
     }
 
     private void populateViews() {
-
+        getSupportActionBar().hide();
         forecastButton = findViewById(R.id.forecast_button);
         mRecyclerView = findViewById(R.id.hourly_recycler);
         currentWeatherTV = findViewById(R.id.current_weather_tv);
@@ -212,6 +224,9 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
         mainProgressBar = findViewById(R.id.main_loading_bar);
         mainRootLayout = findViewById(R.id.main_screen_root_layout);
         currentUnitsTV = findViewById(R.id.units_current);
+        errorScreenLayout = findViewById(R.id.error_screen);
+        errorCodeTV =  findViewById(R.id.error_code);
+        errorMessage = findViewById(R.id.error_message);
 
 
     }

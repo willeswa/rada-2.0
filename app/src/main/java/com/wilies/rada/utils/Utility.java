@@ -9,12 +9,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.wilies.rada.R;
 import com.wilies.rada.adapters.HourlyWeatherAdapter;
+import com.wilies.rada.models.ErrorResponse;
+import com.wilies.rada.ui.LaunchActivity;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -168,4 +171,28 @@ public class Utility {
         progressBar.setVisibility(View.GONE);
         viewToShow.setVisibility(View.VISIBLE);
     }
+
+    public static void showErrorResponse(Context context, ErrorResponse errorResponse) {
+        Toast toast;
+        toast = Toast.makeText(context, getErrorMessage(errorResponse), Toast.LENGTH_LONG);
+        toast.show();
+
+    }
+
+    public static String getErrorMessage(ErrorResponse errorResponse) {
+        String message;
+
+        switch (errorResponse.getCode()){
+            case 401:
+                message = "Error! 401: Unauthorized to access";
+                break;
+            default:
+                message = errorResponse.getMessage();
+                break;
+        }
+
+        return message;
+    }
+
+
 }
