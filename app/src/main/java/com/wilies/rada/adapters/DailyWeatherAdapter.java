@@ -43,6 +43,7 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
         Utility.setPreferredUnits(holder.getDailyMinTemp(), PREFERRED_UNITS, dailyWeather.getDailyTemperature().getMinTemp());
         holder.getDailyRain().setText(Utility.parseFloatToString(dailyWeather.getRain()));
         holder.getDayOfWeek().setText(Utility.getDayOfTheWeek(dailyWeather.getTime()));
+        holder.getDailyUnitsTV().setText(PREFERRED_UNITS);
 //        Utility.loadLocalToImageView(holder.itemView, "ic_baseline_cloud_25", "drawable", mContext, holder.getDailyImageView());
         Utility.loadFromURLToImageView(mContext, dailyWeather.getWeatherDescription().get(0).getIcon(), holder.getDailyImageView());
     }
@@ -69,6 +70,7 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
         private TextView dailyMinTemp;
         private TextView dailyRain;
         private TextView dailyHumidity;
+        private TextView dailyUnitsTV;
 
         public DailyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,6 +81,7 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
             dailyRain = itemView.findViewById(R.id.daily_rain);
             dailyHumidity = itemView.findViewById(R.id.daily_humidty);
             dayOfWeek = itemView.findViewById(R.id.daily_day_name);
+            dailyUnitsTV = itemView.findViewById(R.id.forecast_unit);
         }
 
         public ImageView getDailyImageView() {
@@ -103,6 +106,10 @@ public class DailyWeatherAdapter extends RecyclerView.Adapter<DailyWeatherAdapte
 
         public TextView getDayOfWeek() {
             return dayOfWeek;
+        }
+
+        public TextView getDailyUnitsTV() {
+            return dailyUnitsTV;
         }
     }
 }
