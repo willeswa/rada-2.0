@@ -3,23 +3,26 @@
     android:theme="@style/Theme.Rada20">
 
     <PreferenceCategory
-        android:theme="@style/Theme.Rada20"
-        app:title="@string/profile_header"
         android:layout="@layout/pref_heading_style"
-        >
+        android:theme="@style/Theme.Rada20"
+        app:title="@string/profile_header">
 
         <EditTextPreference
-            android:theme="@style/Theme.Rada20"
             app:icon="@drawable/ic_baseline_person_24"
             app:key="signature"
             app:title="@string/profile_name"
             app:useSimpleSummaryProvider="true" />
-            <EditTextPreference
-            android:title="@string/location"
+        <EditTextPreference
+            android:icon="@drawable/ic_baseline_location_on_24"
             android:key="@string/location_key"
-            android:summary="Your location"
-            android:icon="@drawable/ic_baseline_location_on_24"></EditTextPreference>
-
+            android:title="@string/location"
+            app:useSimpleSummaryProvider="true"/>
+        <Preference
+            android:title="Explore the place"
+            android:key="@string/map_key"
+            android:summary="Explore the neighbourhood on Google Maps"
+            android:icon="@drawable/ic_baseline_map_24"
+            />
 
 
     </PreferenceCategory>
@@ -39,7 +42,6 @@
             app:key="@string/units_key"
             app:title="@string/preference_title"
             app:useSimpleSummaryProvider="true" />
-
 
 
     </PreferenceCategory>
