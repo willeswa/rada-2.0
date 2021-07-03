@@ -1,5 +1,6 @@
 package com.wilies.rada.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
@@ -70,19 +71,27 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
         setContentView(R.layout.activity_main);
 
         populateViews();
-        loadState();
-
-
-        mHourlyWeatherViewModel.init();
-        mHourlyWeatherViewModel.loadWeatherData(location);
-        mHourlyWeatherAdapter.setPREFERRED_UNITS(Utility.getPreferredUnits(getApplication(), sharedPreferences));
-
-        mRecyclerView.setAdapter(mHourlyWeatherAdapter);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
 
 
-        loadHourlyWeather();
+        if(Utility.isInternetConnected(this)){
+            loadState();
+            mHourlyWeatherViewModel.init();
+            mHourlyWeatherViewModel.loadWeatherData(location);
+            mHourlyWeatherAdapter.setPREFERRED_UNITS(Utility.getPreferredUnits(getApplication(), sharedPreferences));
+
+            mRecyclerView.setAdapter(mHourlyWeatherAdapter);
+            mRecyclerView.setLayoutManager(mLinearLayoutManager);
+
+
+
+            loadHourlyWeather();
+        } else {
+            ErrorResponse res = new ErrorResponse();
+            res.setCode(500);
+            res.setMessage("No internet Connection");
+            loadErrorScreen(res, this);
+        }
 
         forecastButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, WeekForecastActivity.class);
@@ -123,13 +132,17 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
 
             @Override
             public void onChanged(ErrorResponse errorResponse) {
-                errorCodeTV.setText(String.valueOf(errorResponse.getCode()));
-                errorMessage.setText(Utility.getErrorMessage(errorResponse));
-                Utility.finishLoading(mainProgressBar, errorScreenLayout);
-                Utility.showErrorResponse(LaunchActivity.this, errorResponse);
+                loadErrorScreen(errorResponse, LaunchActivity.this);
             }
         });
 
+    }
+
+    private void loadErrorScreen(ErrorResponse errorResponse, Context context) {
+        errorCodeTV.setText(String.valueOf(errorResponse.getCode()));
+        errorMessage.setText(Utility.getErrorMessage(errorResponse));
+        Utility.finishLoading(mainProgressBar, errorScreenLayout);
+        Utility.showErrorResponse(context, errorResponse);
     }
 
 
