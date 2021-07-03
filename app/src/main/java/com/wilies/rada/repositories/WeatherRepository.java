@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherRepository {
     private static final String BASE_URL = "https://api.openweathermap.org/";
-    private static final String API_KEY = "";
+    private static final String API_KEY = "3af907a96bd19f4258fbb11f2353b660";
     private static final String TAG = WeatherRepository.class.getSimpleName();
 
     private WebService mWebService;
@@ -61,17 +61,16 @@ public class WeatherRepository {
 
         mWebService.getWeatherData(location.getLatitude(),location.getLongitude(), API_KEY)
         .enqueue(new Callback<WeatherDataResponse>(){
+            Response<WeatherDataResponse> res;
 
             @Override
             public void onResponse(Call<WeatherDataResponse> call, Response<WeatherDataResponse> response) {
                if(response.isSuccessful() && response != null){
-                   mWeatherData.postValue(response.body());
+                  res = response;
+                   mWeatherData.postValue(res.body());
             } else {
                    mWeatherData.postValue(null);
-                   Gson gson = new Gson();
-                   Type type = new TypeToken<ErrorResponse>(){}.getType();
-                   ErrorResponse error = gson.fromJson(response.errorBody().charStream(), type);
-                   mErrorResponse.postValue(error);
+                   loadError(response);
                }
 
             }
@@ -81,12 +80,20 @@ public class WeatherRepository {
                 Log.i(TAG, "Repository says nothing -> ", t);
 
                 mWeatherData.postValue(null);
+                loadError(res);
             }
 
 
         });
 
 
+    }
+
+    private void loadError(Response<WeatherDataResponse> response) {
+        Gson gson = new Gson();
+        Type type = new TypeToken<ErrorResponse>(){}.getType();
+        ErrorResponse error = gson.fromJson(response.errorBody().charStream(), type);
+        mErrorResponse.postValue(error);
     }
 
     private OkHttpClient constructClient() {

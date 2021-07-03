@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -194,5 +196,10 @@ public class Utility {
         return message;
     }
 
-
+    public static boolean isInternetConnected(Context context){
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
+        boolean connected = activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+        return connected;
+    }
 }

@@ -20,4 +20,11 @@ public class ErrorResponse {
     }
 
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
 }
