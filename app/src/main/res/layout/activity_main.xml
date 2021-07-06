@@ -126,6 +126,16 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/rainy" />
+
+            <TextView
+                android:id="@+id/last_updated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Last updated: "
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:textStyle="italic" />
         </LinearLayout>
 
         <LinearLayout

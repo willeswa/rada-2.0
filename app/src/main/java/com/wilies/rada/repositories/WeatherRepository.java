@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherRepository {
     private static final String BASE_URL = "https://api.openweathermap.org/";
-    private static final String API_KEY = "3af907a96bd19f4258fbb11f2353b660";
+    private static final String API_KEY = "d218ae110eb365f06ae2b4414e6b464e";
     private static final String TAG = WeatherRepository.class.getSimpleName();
 
     private WebService mWebService;
@@ -57,9 +57,9 @@ public class WeatherRepository {
         return sWeatherRepository;
     }
 
-    public void loadWeatherData(Address location){
+    public void loadWeatherData(double lat, double lon){
 
-        mWebService.getWeatherData(location.getLatitude(),location.getLongitude(), API_KEY)
+        mWebService.getWeatherData(lat,lon, API_KEY)
         .enqueue(new Callback<WeatherDataResponse>(){
             Response<WeatherDataResponse> res;
 

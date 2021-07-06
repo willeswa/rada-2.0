@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -41,10 +42,12 @@ public class WeekForecastActivity extends AppCompatActivity {
         mWeatherViewModel.init();
 
         Intent intent = getIntent();
-        String location = intent.getStringExtra(LaunchActivity.LOCATION_EXTRA);
+        String prefLocation = intent.getStringExtra(LaunchActivity.LOCATION_EXTRA);
         String preferred_units = intent.getStringExtra(LaunchActivity.PREFERRED_UNITS_EXTRA);
 
-        mWeatherViewModel.loadWeatherData(Utility.getLocation(this, location));
+        Address location = Utility.getLocation(this, prefLocation);
+
+        mWeatherViewModel.loadWeatherData(location.getLatitude(), location.getLongitude());
         mWeatherAdapter = new DailyWeatherAdapter(this);
         mWeatherAdapter.setPREFERRED_UNITS(preferred_units);
         mRecyclerView.setAdapter(mWeatherAdapter);
