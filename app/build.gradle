@@ -32,6 +32,10 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.1'
     def lifecycle_version = "2.3.1"
     def arch_version = "2.1.0"
+    def work_version = "2.5.0"
+
+    // (Java only)
+    implementation "androidx.work:work-runtime:$work_version"
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'

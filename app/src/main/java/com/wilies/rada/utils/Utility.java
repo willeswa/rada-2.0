@@ -25,9 +25,13 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class Utility {
     private static SimpleDateFormat formatter;
@@ -68,6 +72,14 @@ public class Utility {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(unixTime*1000L);
         formatter = new SimpleDateFormat("h aa");
+
+        return formatter.format(cal.getTime()).toUpperCase();
+    }
+
+    public static String getLastUpdatedTime(int unixTime){
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(unixTime*1000L);
+        formatter = new SimpleDateFormat("hh:mm:ss");
 
         return formatter.format(cal.getTime()).toUpperCase();
     }
@@ -201,5 +213,10 @@ public class Utility {
         NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
         boolean connected = activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
         return connected;
+    }
+
+    public static void showFeedBack(String message, Context context) {
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
+        toast.show();
     }
 }

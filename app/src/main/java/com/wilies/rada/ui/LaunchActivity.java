@@ -22,12 +22,14 @@ import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.WorkInfo;
 
 import com.wilies.rada.R;
 import com.wilies.rada.adapters.HourlyWeatherAdapter;
 import com.wilies.rada.models.ErrorResponse;
 import com.wilies.rada.models.Weather;
 import com.wilies.rada.models.WeatherDataResponse;
+import com.wilies.rada.utils.Constants;
 import com.wilies.rada.utils.Utility;
 import com.wilies.rada.viewmodels.WeatherViewModel;
 
@@ -56,7 +58,7 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
     private LinearLayout errorScreenLayout;
     private TextView errorCodeTV;
     private TextView errorMessage;
-
+    private TextView timeSinceUpdate;
 
 
     @Override
@@ -77,7 +79,7 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
         if(Utility.isInternetConnected(this)){
             loadState();
             mHourlyWeatherViewModel.init();
-            mHourlyWeatherViewModel.loadWeatherData(location);
+            mHourlyWeatherViewModel.loadWeatherData(location.getLatitude(), location.getLongitude());
             mHourlyWeatherAdapter.setPREFERRED_UNITS(Utility.getPreferredUnits(getApplication(), sharedPreferences));
 
             mRecyclerView.setAdapter(mHourlyWeatherAdapter);
@@ -86,6 +88,8 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
 
 
             loadHourlyWeather();
+            mHourlyWeatherViewModel.startSync();
+
         } else {
             ErrorResponse res = new ErrorResponse();
             res.setCode(500);
@@ -124,6 +128,7 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
                     loadCurrentWeather(mMCurrentWeather);
                     mHourlyWeatherAdapter.setHourlyWeatherList(weatherDataResponse.getHourlyWeathers());
                     Utility.finishLoading(mainProgressBar, mainRootLayout);
+
                 }
             }
         });
@@ -176,6 +181,7 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
         currentUnitsTV.setText(Utility.getPreferredUnits(getApplication(), sharedPreferences));
         currentLocationTV.setText(preferredLocation());
         currentDateTV.setText(Utility.getDateFromTimestamp(currentWeather.getUnixTime()));
+        timeSinceUpdate.setText("Last updated: " + Utility.getLastUpdatedTime( currentWeather.getUnixTime()) );
         imageToLoadForWeather(currentWeather);
     }
 
@@ -240,6 +246,7 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
         errorScreenLayout = findViewById(R.id.error_screen);
         errorCodeTV =  findViewById(R.id.error_code);
         errorMessage = findViewById(R.id.error_message);
+        timeSinceUpdate = findViewById(R.id.last_updated);
 
 
     }
@@ -247,7 +254,8 @@ public class LaunchActivity extends AppCompatActivity implements SharedPreferenc
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(getResources().getString(R.string.location_key))) {
-            mHourlyWeatherViewModel.loadWeatherData(Utility.getLocation(this, preferredLocation()));
+            Address location = Utility.getLocation(this, preferredLocation());
+            mHourlyWeatherViewModel.loadWeatherData(location.getLatitude(), location.getLongitude());
         } else if (key.equals(getResources().getString(R.string.profile_name_key))) {
 
         } else if (key.equals(getResources().getString(R.string.units_key))) {
